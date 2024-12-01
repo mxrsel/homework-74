@@ -32,7 +32,22 @@ messagesRequestsRouter.get("/:id", async (req, res) => {
 });
 
 messagesRequestsRouter.post("/", async (req, res) => {
+    try {
+        const datetime = new Date().toISOString();
+        const id = datetime;
+        const fileName = `${id}.txt`;
+        const filePath = `${path}/${fileName}`;
 
+        const data: Message = {
+            id,
+            message: req.body.message,
+            datetime: datetime
+        };
+        await fs.writeFile(filePath, JSON.stringify(data));
+        res.send(data);
+    } catch (e) {
+        console.error(e);
+    }
 });
 
 export default messagesRequestsRouter;
