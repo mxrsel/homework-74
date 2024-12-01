@@ -28,7 +28,16 @@ messagesRequestsRouter.get("/", async (req, res) => {
 });
 
 messagesRequestsRouter.get("/:id", async (req, res) => {
+    try {
+        const fileName = req.params.id;
+        const filePath = `${path}/${fileName}`;
 
+        const content = await fs.readFile(filePath, "utf-8");
+        const message: Message = JSON.parse(content);
+        res.send(message);
+    } catch (e) {
+        console.error(e);
+    }
 });
 
 messagesRequestsRouter.post("/", async (req, res) => {
